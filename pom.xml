@@ -12,7 +12,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <telegrambots.version>4.0.1</telegrambots.version>
-
+        <hibernate.version>5.3.4.Final</hibernate.version>
+        <postgresql.version>42.2.4</postgresql.version>
     </properties>
 
 
@@ -22,5 +23,16 @@
             <artifactId>telegrambots</artifactId>
             <version>${telegrambots.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
     </dependencies>
 </project>
