@@ -34,11 +34,13 @@ public class Bot extends TelegramLongPollingBot {
         }
         if (txt.equals("/dixie")) {
             for (Discount discount : discountService.findAllDiscounts()) {
-                sendMsg(msg, discount.getName() + "\nСтарая цена: " + discount.getOldPrice() + "\nНовая цена: " + discount.getNewPrice());
+                sendMsg(msg, "Магазин: " + discount.getShopByShopId().getName() + "\n" + discount.getName() + "\nСтарая цена: " + discount.getOldPrice() + "\nНовая цена: " + discount.getNewPrice());
             }
         }
         if (txt.equals("/sync")){
             //Парсинг с сайта Дикси и добавление данных в бд
+            Shop dixie = new Shop("Дикси");
+            shopService.saveShop(dixie);
             Document document = null;
             try {
                 document = Jsoup.connect("https://dixy.ru/akcii/skidki-nedeli/?SHOWALL_1=1").get();
@@ -53,7 +55,7 @@ public class Bot extends TelegramLongPollingBot {
                 String oldPrice = divElement.getElementsByAttributeValue("class", "price-full__integer").text();
                 String newPrice = divElement.getElementsByAttributeValue("class", "price-left").text();
                 String name = divElement.getElementsByAttributeValue("class", "product-name js-ellipsis").text();
-                discountService.saveDiscount(new Discount(name, oldPrice, newPrice));
+                discountService.saveDiscount(new Discount(name, oldPrice, newPrice, dixie));
             });
         }
 

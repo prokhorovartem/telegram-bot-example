@@ -14,10 +14,11 @@ public class Discount {
     public Discount() {
     }
 
-    public Discount(String name, String oldPrice, String newPrice) {
+    public Discount(String name, String oldPrice, String newPrice, Shop shop) {
         this.name = name;
         this.oldPrice = oldPrice;
         this.newPrice = newPrice;
+        this.shopByShopId = shop;
     }
 
     @Id
