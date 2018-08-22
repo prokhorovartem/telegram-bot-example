@@ -1,19 +1,29 @@
 package org.telegrambot;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegrambot.models.Discount;
 import org.telegrambot.models.Shop;
+import org.telegrambot.services.DiscountService;
 import org.telegrambot.services.ShopService;
+
+import java.io.IOException;
 
 public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         ShopService shopService = new ShopService();
+        DiscountService discountService = new DiscountService();
+
         Message msg = update.getMessage();
         String txt = msg.getText();
         System.out.println("user" + "(" + msg.getChatId() + "): " + txt);
+
         if (txt.equals("/start")) {
             sendMsg(msg, "Hello, user! I will try to entertain you.");
         }
@@ -21,6 +31,30 @@ public class Bot extends TelegramLongPollingBot {
             for (Shop shop : shopService.findAllShops()) {
                 sendMsg(msg, shop.getName());
             }
+        }
+        if (txt.equals("/dixie")) {
+            for (Discount discount : discountService.findAllDiscounts()) {
+                sendMsg(msg, discount.getName() + "\nСтарая цена: " + discount.getOldPrice() + "\nНовая цена: " + discount.getNewPrice());
+            }
+        }
+        if (txt.equals("/sync")){
+            //Парсинг с сайта Дикси и добавление данных в бд
+            Document document = null;
+            try {
+                document = Jsoup.connect("https://dixy.ru/akcii/skidki-nedeli/?SHOWALL_1=1").get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert document != null;
+            Elements divElements = document.getElementsByAttributeValue("class", "elem-product");
+
+            divElements.forEach((divElement) -> {
+                String oldPrice = divElement.getElementsByAttributeValue("class", "price-full__integer").text();
+                String newPrice = divElement.getElementsByAttributeValue("class", "price-left").text();
+                String name = divElement.getElementsByAttributeValue("class", "product-name js-ellipsis").text();
+                discountService.saveDiscount(new Discount(name, oldPrice, newPrice));
+            });
         }
 
     }

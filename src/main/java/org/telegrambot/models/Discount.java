@@ -7,17 +7,15 @@ import javax.persistence.*;
 public class Discount {
     private Integer id;
     private String name;
-    private String category;
-    private Integer oldPrice;
-    private Integer newPrice;
+    private String oldPrice;
+    private String newPrice;
     private Shop shopByShopId;
 
     public Discount() {
     }
 
-    public Discount(String name, String category, Integer oldPrice, Integer newPrice) {
+    public Discount(String name, String oldPrice, String newPrice) {
         this.name = name;
-        this.category = category;
         this.oldPrice = oldPrice;
         this.newPrice = newPrice;
     }
@@ -32,6 +30,7 @@ public class Discount {
         this.id = id;
     }
 
+
     public String getName() {
         return name;
     }
@@ -40,27 +39,21 @@ public class Discount {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Integer getOldPrice() {
+    @Column(name = "old_price")
+    public String getOldPrice() {
         return oldPrice;
     }
 
-    public void setOldPrice(Integer oldPrice) {
+    public void setOldPrice(String oldPrice) {
         this.oldPrice = oldPrice;
     }
 
-    public Integer getNewPrice() {
+    @Column(name = "new_price")
+    public String getNewPrice() {
         return newPrice;
     }
 
-    public void setNewPrice(Integer newPrice) {
+    public void setNewPrice(String newPrice) {
         this.newPrice = newPrice;
     }
 
@@ -69,24 +62,22 @@ public class Discount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Discount that = (Discount) o;
+        Discount discount = (Discount) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (category != null ? !category.equals(that.category) : that.category != null) return false;
-        if (oldPrice != null ? !oldPrice.equals(that.oldPrice) : that.oldPrice != null) return false;
-        if (newPrice != null ? !newPrice.equals(that.newPrice) : that.newPrice != null) return false;
-
-        return true;
+        if (id != null ? !id.equals(discount.id) : discount.id != null) return false;
+        if (name != null ? !name.equals(discount.name) : discount.name != null) return false;
+        if (oldPrice != null ? !oldPrice.equals(discount.oldPrice) : discount.oldPrice != null) return false;
+        if (newPrice != null ? !newPrice.equals(discount.newPrice) : discount.newPrice != null) return false;
+        return shopByShopId != null ? shopByShopId.equals(discount.shopByShopId) : discount.shopByShopId == null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (oldPrice != null ? oldPrice.hashCode() : 0);
         result = 31 * result + (newPrice != null ? newPrice.hashCode() : 0);
+        result = 31 * result + (shopByShopId != null ? shopByShopId.hashCode() : 0);
         return result;
     }
 
