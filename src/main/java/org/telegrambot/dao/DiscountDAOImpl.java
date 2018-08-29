@@ -8,7 +8,7 @@ import org.telegrambot.utils.HibernateSessionFactoryUtil;
 import java.util.List;
 
 public class DiscountDAOImpl implements DiscountDAO {
-    public Discount findById(int id) {
+    public Discount findById(Long id) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Discount.class, id);
     }
 

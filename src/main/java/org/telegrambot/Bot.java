@@ -37,7 +37,10 @@ public class Bot extends TelegramLongPollingBot {
                 sendMsg(msg, "Магазин: " + discount.getShopByShopId().getName() + "\n" + discount.getName() + "\nСтарая цена: " + discount.getOldPrice() + "\nНовая цена: " + discount.getNewPrice());
             }
         }
-        if (txt.equals("/sync")){
+        if (txt.equals("/sync")) {
+            //Удаление всех записей в бд с таблиц shop & discount
+            shopService.deleteShops();
+
             //Парсинг с сайта Дикси и добавление данных в бд
             Shop dixie = new Shop("Дикси");
             shopService.saveShop(dixie);
@@ -51,10 +54,11 @@ public class Bot extends TelegramLongPollingBot {
             assert document != null;
             Elements divElements = document.getElementsByAttributeValue("class", "elem-product");
 
-            divElements.forEach((divElement) -> {
-                String oldPrice = divElement.getElementsByAttributeValue("class", "price-full__integer").text();
-                String newPrice = divElement.getElementsByAttributeValue("class", "price-left").text();
+            divElements.forEach(divElement -> {
                 String name = divElement.getElementsByAttributeValue("class", "product-name js-ellipsis").text();
+                String oldString = divElement.getElementsByAttributeValue("class", "price-full__integer").text();
+                Integer oldPrice = (oldString.equals("")) ? null : Integer.parseInt(oldString);
+                Integer newPrice = Integer.parseInt(divElement.getElementsByAttributeValue("class", "price-left").text());
                 discountService.saveDiscount(new Discount(name, oldPrice, newPrice, dixie));
             });
         }

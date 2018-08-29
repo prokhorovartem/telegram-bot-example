@@ -5,16 +5,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "discount", schema = "public", catalog = "telegramdb")
 public class Discount {
-    private Integer id;
+    private Long id;
     private String name;
-    private String oldPrice;
-    private String newPrice;
+    private Integer oldPrice;
+    private Integer newPrice;
     private Shop shopByShopId;
 
     public Discount() {
     }
 
-    public Discount(String name, String oldPrice, String newPrice, Shop shop) {
+    public Discount(String name, Integer oldPrice, Integer newPrice, Shop shop) {
         this.name = name;
         this.oldPrice = oldPrice;
         this.newPrice = newPrice;
@@ -23,11 +23,11 @@ public class Discount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,20 +41,20 @@ public class Discount {
     }
 
     @Column(name = "old_price")
-    public String getOldPrice() {
+    public Integer getOldPrice() {
         return oldPrice;
     }
 
-    public void setOldPrice(String oldPrice) {
+    public void setOldPrice(Integer oldPrice) {
         this.oldPrice = oldPrice;
     }
 
     @Column(name = "new_price")
-    public String getNewPrice() {
+    public Integer getNewPrice() {
         return newPrice;
     }
 
-    public void setNewPrice(String newPrice) {
+    public void setNewPrice(Integer newPrice) {
         this.newPrice = newPrice;
     }
 

@@ -11,7 +11,7 @@ public class DiscountService {
     public DiscountService() {
     }
 
-    public Discount findDiscount(int id) {
+    public Discount findDiscount(Long id) {
         return discountDao.findById(id);
     }
 

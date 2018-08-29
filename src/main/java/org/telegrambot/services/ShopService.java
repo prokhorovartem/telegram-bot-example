@@ -11,7 +11,7 @@ public class ShopService {
     public ShopService() {
     }
 
-    public Shop findShop(int id) {
+    public Shop findShop(Long id) {
         return shopDao.findById(id);
     }
 
@@ -21,6 +21,10 @@ public class ShopService {
 
     public void deleteShop(Shop shop) {
         shopDao.delete(shop);
+    }
+
+    public void deleteShops(){
+        shopDao.deleteAll();
     }
 
     public void updateShop(Shop shop) {

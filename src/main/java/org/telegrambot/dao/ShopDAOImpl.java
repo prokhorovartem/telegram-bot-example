@@ -8,7 +8,7 @@ import org.telegrambot.utils.HibernateSessionFactoryUtil;
 import java.util.List;
 
 public class ShopDAOImpl implements ShopDAO {
-    public Shop findById(int id) {
+    public Shop findById(Long id) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Shop.class, id);
     }
 
@@ -34,6 +34,22 @@ public class ShopDAOImpl implements ShopDAO {
         session.delete(shop);
         tx1.commit();
         session.close();
+    }
+
+    public void deleteAll() {
+        Session session = null;
+        try {
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.createQuery("DELETE FROM Shop").executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
     }
 
     public List<Shop> findAll() {

@@ -5,7 +5,7 @@ import org.telegrambot.models.Discount;
 import java.util.List;
 
 public interface DiscountDAO {
-    Discount findById(int id);
+    Discount findById(Long id);
 
     void save(Discount shop);
 

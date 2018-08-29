@@ -5,7 +5,7 @@ import org.telegrambot.models.Shop;
 import java.util.List;
 
 public interface ShopDAO {
-    Shop findById(int id);
+    Shop findById(Long id);
 
     void save(Shop shop);
 
